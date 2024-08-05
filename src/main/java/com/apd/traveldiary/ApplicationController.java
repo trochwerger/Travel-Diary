@@ -65,7 +65,7 @@ public class ApplicationController {
     @FXML
     private void handleLogout() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("main-view.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) logoutButton.getScene().getWindow();
             Scene scene = new Scene(root);
