@@ -27,9 +27,6 @@
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                             <children>
                                 <Button fx:id="startApplicationButton" onAction="#handleStartApplication" text="Start Application" />
-<!--                                <Button fx:id="startApplicationButton" text="Start Application" />-->
-                                <!--           <Button fx:id="startApplicationButton" managed="false" visible="false" onAction="#handleStartApplication" text="Start Application"/>-->
-                                <!--           <Button fx:id="logoutButton" managed="false" visible="false" onAction="#handleLogout" text="Logout"  />-->
                                 <Button fx:id="logoutButton" onAction="#handleLogout" text="Logout" />
                             </children>
         </HBox>

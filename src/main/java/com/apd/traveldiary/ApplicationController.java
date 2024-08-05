@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 //import javafx.scene.layout.AnchorPane;
 //import javafx.stage.Modality;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 public class ApplicationController {
 
+    public VBox entriesSection;
     @FXML private ListView<String> entriesList;
     @FXML private Label usernameLabel;
     @FXML private Button logoutButton;
@@ -193,7 +195,7 @@ public class ApplicationController {
         alert.setTitle("Entry Details");
         alert.setHeaderText("Entry Details: " + selectedEntry);
         alert.showAndWait();
-        
+
     }
 
     public void handleDelete(ActionEvent actionEvent) {
@@ -201,6 +203,11 @@ public class ApplicationController {
         alert.setTitle("Delete Entry");
         alert.setHeaderText("Still in Development");
         alert.showAndWait();
+    }
+
+    public void handleViewEntries(ActionEvent actionEvent) {
+        entriesSection.setVisible(true);
+        entriesSection.setManaged(true);
     }
 
 //    private void showAlert(String title, String message) {

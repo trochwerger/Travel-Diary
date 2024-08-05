@@ -22,22 +22,18 @@
 
         <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
             <Label fx:id="usernameLabel" />
-            <Button text="View Entries"/>
-
-
-
-<!--            <Button onAction="#handleSubmitApplication" text="Submit Application" />-->
-<!--            <Button onAction="#handleClear" text="Clear" />-->
-            <Button onAction="#handleExit" text="Exit" />
-            <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"/>
-        </VBox>
-
-        <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
             <Label text="Entries" />
             <ListView fx:id="entriesList"/>
             <HBox spacing="25.0">
                 <Button onAction="#handleViewDetails" text="View Details" />
                 <Button onAction="#handleDelete" text="Delete" />
+            </HBox>
+        </VBox>
+
+        <VBox spacing="20" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" >
+            <HBox spacing="10" >
+                <Button onAction="#handleExit" text="Exit" />
+                <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"/>
             </HBox>
         </VBox>
 
