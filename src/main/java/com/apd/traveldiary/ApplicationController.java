@@ -192,11 +192,6 @@ public class ApplicationController {
         System.exit(0);
     }
 
-    private void clearForm() {
-        jobDetailsArea.clear();
-        interestedCompaniesList.getItems().clear();
-    }
-
     public void handleViewDetails(ActionEvent actionEvent) {
         String selectedEntry = entriesList.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
