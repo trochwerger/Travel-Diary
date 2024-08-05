@@ -183,11 +183,6 @@ public class ApplicationController {
 //    }
 
     @FXML
-    private void handleClear() {
-        clearForm();
-    }
-
-    @FXML
     private void handleExit() {
         System.exit(0);
     }
