@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane hgap="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.apd.traveldiary.MainController">
+<padding>
+    <Insets bottom="10" left="10" right="10" top="10" />
+</padding>
+<VBox fx:id="mainSection" alignment="CENTER" prefHeight="370.0" prefWidth="486.0" spacing="20" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS">
+    <Label text="Travel Diary" />
+    <HBox fx:id="loginSection" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+        <children>
+            <Button fx:id="loginButton" onAction="#handleLogin" text="Login" />
+            <Button fx:id="registerButton" onAction="#handleRegister" text="Register" />
+        </children>
+    </HBox>
+    <VBox fx:id="loggedInSection" alignment="CENTER" managed="false" prefHeight="200.0" prefWidth="100.0"
+          visible="false">
+        <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER"/>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                            <children>
+                                <Button fx:id="startApplicationButton" onAction="#handleStartApplication" text="Start Application" />
+<!--                                <Button fx:id="startApplicationButton" text="Start Application" />-->
+                                <!--           <Button fx:id="startApplicationButton" managed="false" visible="false" onAction="#handleStartApplication" text="Start Application"/>-->
+                                <!--           <Button fx:id="logoutButton" managed="false" visible="false" onAction="#handleLogout" text="Logout"  />-->
+                                <Button fx:id="logoutButton" onAction="#handleLogout" text="Logout" />
+                            </children>
+        </HBox>
+    </VBox>
+
+    <Button onAction="#handleExit" text="Exit" />
+</VBox>
+<columnConstraints>
+    <ColumnConstraints />
+</columnConstraints>
+<rowConstraints>
+    <RowConstraints />
+</rowConstraints>
+</GridPane>
