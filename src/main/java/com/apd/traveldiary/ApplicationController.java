@@ -20,9 +20,7 @@ public class ApplicationController {
 
     @FXML private ListView<String> entriesList;
     @FXML private Label usernameLabel;
-    @FXML private TextArea jobDetailsArea;
     @FXML private Button logoutButton;
-    @FXML private ListView<String> interestedCompaniesList;
 
 //    sample entries for the list
     private final ObservableList<String> entries = FXCollections.observableArrayList("Entry 1", "Entry 2", "Entry 3", "Entry 4", "Entry 5");

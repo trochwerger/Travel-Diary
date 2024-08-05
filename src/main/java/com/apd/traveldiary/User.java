@@ -12,8 +12,8 @@
  **********************************************/
 package com.apd.traveldiary;
 
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 
 public class User {
     private String name;
