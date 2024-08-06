@@ -3,19 +3,29 @@ package com.traveldiary.controllers;
 import com.traveldiary.models.JournalEntry;
 import com.traveldiary.models.JournalEntryManager;
 import com.traveldiary.models.SessionManager;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.List;
 
 public class DashboardController {
 
     @FXML
-    private ListView<JournalEntry> journalListView;
+    private ListView<JournalEntry> journalEntryListView;
+
+    @FXML
+    private Button addButton;
+
+    @FXML
+    private BorderPane rootPane;
 
     private JournalEntryManager journalEntryManager = JournalEntryManager.getInstance();
     private String currentUser;
@@ -24,86 +34,126 @@ public class DashboardController {
     private void initialize() {
         currentUser = SessionManager.getInstance().getCurrentUser();
         loadJournalEntries();
+
+        // Customize ListView to display only name and date
+        journalEntryListView.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(JournalEntry entry, boolean empty) {
+                super.updateItem(entry, empty);
+                if (empty || entry == null) {
+                    setText(null);
+                } else {
+                    setText(entry.getTitle() + " - " + entry.getDate().toString());
+                }
+            }
+        });
     }
 
     private void loadJournalEntries() {
-        journalListView.setItems(FXCollections.observableArrayList(journalEntryManager.getJournalEntries(currentUser)));
+        List<JournalEntry> entries = journalEntryManager.getJournalEntries(currentUser);
+        journalEntryListView.getItems().setAll(entries);
     }
 
     @FXML
-    private void handleAdd() {
-        openJournalEntryForm(null);
+    private void handleAddButtonAction() {
+        showJournalEntryForm(null);
     }
 
     @FXML
-    private void handleUpdate() {
-        JournalEntry selectedEntry = journalListView.getSelectionModel().getSelectedItem();
-        if (selectedEntry == null) {
-            showAlert(Alert.AlertType.ERROR, "Selection Error", "No journal entry selected.");
-            return;
+    private void handleUpdateButtonAction() {
+        JournalEntry selectedEntry = journalEntryListView.getSelectionModel().getSelectedItem();
+        if (selectedEntry != null) {
+            showJournalEntryForm(selectedEntry);
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select an entry to update.");
         }
-        openJournalEntryForm(selectedEntry);
     }
 
     @FXML
-    private void handleDelete() {
-        JournalEntry selectedEntry = journalListView.getSelectionModel().getSelectedItem();
-        if (selectedEntry == null) {
-            showAlert(Alert.AlertType.ERROR, "Selection Error", "No journal entry selected.");
-            return;
+    private void handleDeleteButtonAction() {
+        JournalEntry selectedEntry = journalEntryListView.getSelectionModel().getSelectedItem();
+        if (selectedEntry != null) {
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setTitle("Confirm Deletion");
+            confirmation.setHeaderText(null);
+            confirmation.setContentText("Are you sure you want to delete this entry?");
+            if (confirmation.showAndWait().orElse(null) == ButtonType.OK) {
+                journalEntryManager.deleteEntry(String.valueOf(selectedEntry));
+                loadJournalEntries();  // Reload entries after deletion
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select an entry to delete.");
         }
-        journalEntryManager.deleteJournalEntry(currentUser, selectedEntry);
-        journalListView.getItems().remove(selectedEntry);
     }
 
     @FXML
-    private void handleView() {
-        JournalEntry selectedEntry = journalListView.getSelectionModel().getSelectedItem();
-        if (selectedEntry == null) {
-            showAlert(Alert.AlertType.ERROR, "Selection Error", "No journal entry selected.");
-            return;
+    private void handleViewButtonAction() {
+        JournalEntry selectedEntry = journalEntryListView.getSelectionModel().getSelectedItem();
+        if (selectedEntry != null) {
+            showJournalEntryForm(selectedEntry);
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select an entry to view.");
         }
+    }
+
+    @FXML
+    private void handleLogoutButtonAction() {
+        SessionManager.getInstance().clearSession();
+        // Transition to login screen or main application screen
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/traveldiary/views/ViewJournalEntry.fxml"));
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/traveldiary/views/LoginView.fxml"));
             Parent root = loader.load();
-            ViewJournalEntryController controller = loader.getController();
-            controller.setJournalEntry(selectedEntry);
-            Stage stage = new Stage();
-            stage.setTitle("View Journal Entry");
+            stage.setTitle("Login");
             stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load the login screen.");
         }
     }
 
     @FXML
-    private void handleLogout() {
-        MainController mainController = new MainController();
-        mainController.setPrimaryStage((Stage) journalListView.getScene().getWindow());
-        mainController.loadWelcome();
+    private void handleExitButtonAction() {
+        // Confirm exit
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirm Exit");
+        confirmation.setHeaderText(null);
+        confirmation.setContentText("Are you sure you want to exit the application?");
+        if (confirmation.showAndWait().orElse(null) == ButtonType.OK) {
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.close();
+        }
     }
 
-    @FXML
-    private void handleExit() {
-        Stage stage = (Stage) journalListView.getScene().getWindow();
-        stage.close();
-    }
-
-    private void openJournalEntryForm(JournalEntry entry) {
+    private void showJournalEntryForm(JournalEntry entry) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/traveldiary/views/JournalEntryForm.fxml"));
             Parent root = loader.load();
+
             JournalEntryFormController controller = loader.getController();
             controller.setJournalEntry(entry);
+
             Stage stage = new Stage();
-            stage.setTitle(entry == null ? "Add Journal Entry" : "Update Journal Entry");
+            stage.setTitle(entry == null ? "Add New Entry" : "Edit Entry");
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.showAndWait();
-            // Refresh the list view
-            loadJournalEntries();
-        } catch (Exception e) {
+
+            loadJournalEntries();  // Reload entries after form is closed
+
+        } catch (IOException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load the entry form.");
+        }
+    }
+
+    @FXML
+    private void handleListViewMouseClick(MouseEvent event) {
+        if (event.getClickCount() == 2) {  // Double-click to edit an entry
+            JournalEntry selectedEntry = journalEntryListView.getSelectionModel().getSelectedItem();
+            if (selectedEntry != null) {
+                showJournalEntryForm(selectedEntry);
+            }
         }
     }
 

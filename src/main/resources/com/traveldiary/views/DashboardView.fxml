@@ -8,15 +8,15 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.traveldiary.controllers.DashboardController" spacing="10" alignment="CENTER">
     <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-    <ListView fx:id="journalListView" prefHeight="300" prefWidth="400"/>
+    <ListView fx:id="journalEntryListView" prefHeight="300" prefWidth="400"/>
     <HBox spacing="10">
-        <Button text="Add" onAction="#handleAdd" prefWidth="80"/>
-        <Button text="Update" onAction="#handleUpdate" prefWidth="80"/>
-        <Button text="Delete" onAction="#handleDelete" prefWidth="80"/>
-        <Button text="View" onAction="#handleView" prefWidth="80"/>
+        <Button text="Add" onAction="#handleAddButtonAction" prefWidth="80"/>
+        <Button text="Update" onAction="#handleUpdateButtonAction" prefWidth="80"/>
+        <Button text="Delete" onAction="#handleDeleteButtonAction" prefWidth="80"/>
+        <Button text="View" onAction="#handleViewButtonAction" prefWidth="80"/>
     </HBox>
     <HBox spacing="10">
-        <Button text="Logout" onAction="#handleLogout" prefWidth="80"/>
-        <Button text="Exit" onAction="#handleExit" prefWidth="80"/>
+        <Button text="Logout" onAction="#handleLogoutButtonAction" prefWidth="80"/>
+        <Button text="Exit" onAction="#handleExitButtonAction" prefWidth="80"/>
     </HBox>
 </VBox>

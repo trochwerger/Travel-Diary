@@ -11,25 +11,34 @@ public class ViewJournalEntryController {
 
     @FXML
     private Label titleLabel;
+
     @FXML
     private Label dateLabel;
+
     @FXML
     private Label contentLabel;
+
     @FXML
     private ImageView imageView;
-
-    public void setJournalEntry(JournalEntry entry) {
-        titleLabel.setText(entry.getTitle());
-        dateLabel.setText(entry.getDate());
-        contentLabel.setText(entry.getContent());
-        if (entry.getImagePath() != null && !entry.getImagePath().isEmpty()) {
-            imageView.setImage(new Image(entry.getImagePath()));
-        }
-    }
 
     @FXML
     private void handleClose() {
         Stage stage = (Stage) titleLabel.getScene().getWindow();
         stage.close();
+    }
+
+    public void setJournalEntry(JournalEntry entry) {
+        if (entry != null) {
+            titleLabel.setText(entry.getTitle());
+            dateLabel.setText(entry.getDate());
+            contentLabel.setText(entry.getContent());
+
+            if (entry.getImagePath() != null && !entry.getImagePath().isEmpty()) {
+                Image image = new Image("file:" + entry.getImagePath());
+                imageView.setImage(image);
+            } else {
+                imageView.setImage(null);
+            }
+        }
     }
 }
