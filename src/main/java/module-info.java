@@ -1,11 +1,9 @@
-module com.apd.traveldiary {
+module com.traveldiary {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
-    requires org.controlsfx.controls;
-    requires com.dlsc.formsfx;
-    requires org.kordamp.bootstrapfx.core;
-
-    opens com.apd.traveldiary to javafx.fxml;
-    exports com.apd.traveldiary;
+    opens com.traveldiary to javafx.fxml;
+    opens com.traveldiary.controllers to javafx.fxml;
+    exports com.traveldiary;
 }
