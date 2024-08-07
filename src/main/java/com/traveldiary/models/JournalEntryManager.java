@@ -39,10 +39,21 @@ public class JournalEntryManager {
 
     public boolean deleteEntry(String title) {
         try {
+            // Log current entries for debugging
+            System.out.println("Current Entries:");
+            entries.forEach(e -> System.out.println(e.getTitle()));
+
+            // Attempt to remove entry by title
             boolean removed = entries.removeIf(e -> e.getTitle().equals(title));
+
+            // Log the result of removal attempt
             if (removed) {
+                System.out.println("Entry with title \"" + title + "\" removed.");
                 writeEntries(); // Write updated list to the file
+            } else {
+                System.out.println("No entry with title \"" + title + "\" found.");
             }
+
             return removed;
         } catch (Exception e) {
             e.printStackTrace();

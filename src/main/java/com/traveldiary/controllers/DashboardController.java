@@ -5,7 +5,6 @@ import com.traveldiary.models.JournalEntryManager;
 import com.traveldiary.models.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,7 +24,19 @@ public class DashboardController {
     private Button addButton;
 
     @FXML
-    private BorderPane rootPane;
+    private Button updateButton;
+
+    @FXML
+    private Button deleteButton;
+
+    @FXML
+    private Button viewButton;
+
+    @FXML
+    private Button logoutButton;
+
+    @FXML
+    private Button exitButton;
 
     private JournalEntryManager journalEntryManager = JournalEntryManager.getInstance();
     private String currentUser;
@@ -78,7 +89,7 @@ public class DashboardController {
             confirmation.setHeaderText(null);
             confirmation.setContentText("Are you sure you want to delete this entry?");
             if (confirmation.showAndWait().orElse(null) == ButtonType.OK) {
-                journalEntryManager.deleteEntry(String.valueOf(selectedEntry));
+                journalEntryManager.deleteEntry(selectedEntry.getTitle());  // Use the entry object itself
                 loadJournalEntries();  // Reload entries after deletion
             }
         } else {
@@ -90,7 +101,7 @@ public class DashboardController {
     private void handleViewButtonAction() {
         JournalEntry selectedEntry = journalEntryListView.getSelectionModel().getSelectedItem();
         if (selectedEntry != null) {
-            showJournalEntryForm(selectedEntry);
+            showViewJournalEntry(selectedEntry);
         } else {
             showAlert(Alert.AlertType.WARNING, "No Selection", "Please select an entry to view.");
         }
@@ -101,7 +112,7 @@ public class DashboardController {
         SessionManager.getInstance().clearSession();
         // Transition to login screen or main application screen
         try {
-            Stage stage = (Stage) rootPane.getScene().getWindow();
+            Stage stage = (Stage) addButton.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/traveldiary/views/LoginView.fxml"));
             Parent root = loader.load();
             stage.setTitle("Login");
@@ -120,8 +131,12 @@ public class DashboardController {
         confirmation.setHeaderText(null);
         confirmation.setContentText("Are you sure you want to exit the application?");
         if (confirmation.showAndWait().orElse(null) == ButtonType.OK) {
-            Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.close();
+            Stage stage = (Stage) exitButton.getScene().getWindow();
+            if (stage != null) {
+                stage.close();
+            } else {
+                System.out.println("Stage is null");
+            }
         }
     }
 
@@ -147,12 +162,32 @@ public class DashboardController {
         }
     }
 
+    private void showViewJournalEntry(JournalEntry entry) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/traveldiary/views/ViewJournalEntry.fxml"));
+            Parent root = loader.load();
+
+            ViewJournalEntryController controller = loader.getController();
+            controller.setJournalEntry(entry);
+
+            Stage stage = new Stage();
+            stage.setTitle("View Journal Entry");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load the view entry screen.");
+        }
+    }
+
     @FXML
     private void handleListViewMouseClick(MouseEvent event) {
-        if (event.getClickCount() == 2) {  // Double-click to edit an entry
+        if (event.getClickCount() == 2) {  // Double-click to view an entry
             JournalEntry selectedEntry = journalEntryListView.getSelectionModel().getSelectedItem();
             if (selectedEntry != null) {
-                showJournalEntryForm(selectedEntry);
+                showViewJournalEntry(selectedEntry);
             }
         }
     }

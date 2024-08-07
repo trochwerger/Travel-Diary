@@ -16,7 +16,7 @@
         <Button text="View" onAction="#handleViewButtonAction" prefWidth="80"/>
     </HBox>
     <HBox spacing="10">
-        <Button text="Logout" onAction="#handleLogoutButtonAction" prefWidth="80"/>
-        <Button text="Exit" onAction="#handleExitButtonAction" prefWidth="80"/>
+        <Button fx:id="logoutButton" text="Logout" onAction="#handleLogoutButtonAction" prefWidth="80"/>
+        <Button fx:id="exitButton" text="Exit" onAction="#handleExitButtonAction" prefWidth="80"/>
     </HBox>
 </VBox>
