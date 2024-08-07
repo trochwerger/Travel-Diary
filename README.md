@@ -2,6 +2,8 @@
 
 The **Travel Diary** application is a personal journaling tool designed to help users document and manage their travel experiences. It allows users to create, view, update, and delete journal entries, manage user accounts, and maintain session information. The app uses file-based storage for persisting journal entries and user data.
 
+You can also watch the [application demo on YouTube](https://youtu.be/RmTgSJ1V5hc) if you want to see this in action.
+
 ## Features
 
 - **User Authentication**
