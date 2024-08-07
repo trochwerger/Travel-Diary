@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -16,7 +17,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class DashboardController {
-
     @FXML
     private ListView<JournalEntry> journalEntryListView;
 
@@ -109,19 +109,20 @@ public class DashboardController {
 
     @FXML
     private void handleLogoutButtonAction() {
-        SessionManager.getInstance().clearSession();
-        // Transition to login screen or main application screen
-        try {
-            Stage stage = (Stage) addButton.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/traveldiary/views/LoginView.fxml"));
-            Parent root = loader.load();
-            stage.setTitle("Login");
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load the login screen.");
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirm Logout");
+        confirmation.setHeaderText(null);
+        confirmation.setContentText("Are you sure you want to logout?");
+
+        if (confirmation.showAndWait().orElse(null) == ButtonType.OK) {
+            SessionManager.getInstance().clearSession();  // Clear user session
+
+            MainController mainController = new MainController();
+            mainController.setPrimaryStage((Stage) journalEntryListView.getScene().getWindow());
+            mainController.loadWelcome();
         }
     }
+
 
     @FXML
     private void handleExitButtonAction() {
