@@ -4,12 +4,11 @@ import com.traveldiary.models.JournalEntry;
 import com.traveldiary.models.JournalEntryManager;
 import com.traveldiary.models.SessionManager;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -38,7 +37,7 @@ public class DashboardController {
     @FXML
     private Button exitButton;
 
-    private JournalEntryManager journalEntryManager = JournalEntryManager.getInstance();
+    private final JournalEntryManager journalEntryManager = JournalEntryManager.getInstance();
     private String currentUser;
 
     @FXML
@@ -46,7 +45,6 @@ public class DashboardController {
         currentUser = SessionManager.getInstance().getCurrentUser();
         loadJournalEntries();
 
-        // Customize ListView to display only name and date
         journalEntryListView.setCellFactory(listView -> new ListCell<>() {
             @Override
             protected void updateItem(JournalEntry entry, boolean empty) {
@@ -54,7 +52,7 @@ public class DashboardController {
                 if (empty || entry == null) {
                     setText(null);
                 } else {
-                    setText(entry.getTitle() + " - " + entry.getDate().toString());
+                    setText(entry.getTitle() + " - " + entry.getDate());
                 }
             }
         });
@@ -89,8 +87,8 @@ public class DashboardController {
             confirmation.setHeaderText(null);
             confirmation.setContentText("Are you sure you want to delete this entry?");
             if (confirmation.showAndWait().orElse(null) == ButtonType.OK) {
-                journalEntryManager.deleteEntry(selectedEntry.getTitle());  // Use the entry object itself
-                loadJournalEntries();  // Reload entries after deletion
+                journalEntryManager.deleteEntry(selectedEntry.getTitle());
+                loadJournalEntries();
             }
         } else {
             showAlert(Alert.AlertType.WARNING, "No Selection", "Please select an entry to delete.");
@@ -115,7 +113,7 @@ public class DashboardController {
         confirmation.setContentText("Are you sure you want to logout?");
 
         if (confirmation.showAndWait().orElse(null) == ButtonType.OK) {
-            SessionManager.getInstance().clearSession();  // Clear user session
+            SessionManager.getInstance().clearSession();
 
             MainController mainController = new MainController();
             mainController.setPrimaryStage((Stage) journalEntryListView.getScene().getWindow());
@@ -126,7 +124,6 @@ public class DashboardController {
 
     @FXML
     private void handleExitButtonAction() {
-        // Confirm exit
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Confirm Exit");
         confirmation.setHeaderText(null);
@@ -155,7 +152,7 @@ public class DashboardController {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            loadJournalEntries();  // Reload entries after form is closed
+            loadJournalEntries();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -185,7 +182,7 @@ public class DashboardController {
 
     @FXML
     private void handleListViewMouseClick(MouseEvent event) {
-        if (event.getClickCount() == 2) {  // Double-click to view an entry
+        if (event.getClickCount() == 2) {
             JournalEntry selectedEntry = journalEntryListView.getSelectionModel().getSelectedItem();
             if (selectedEntry != null) {
                 showViewJournalEntry(selectedEntry);

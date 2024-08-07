@@ -8,13 +8,20 @@ public class JournalEntry {
     private String imagePath;
     private String user;
 
-    // Constructor
     public JournalEntry(String title, String date, String content, String imagePath, String user) {
         this.title = title;
         this.date = date;
         this.content = content;
         this.imagePath = imagePath;
         this.user = user;
+    }
+
+    public static JournalEntry fromString(String entryString) {
+        String[] parts = entryString.split("\\|");
+        if (parts.length == 5) {
+            return new JournalEntry(parts[0], parts[1], parts[2], parts[3], parts[4]);
+        }
+        return null;
     }
 
     // Getter and setter methods
@@ -61,13 +68,5 @@ public class JournalEntry {
     @Override
     public String toString() {
         return title + "|" + date + "|" + content + "|" + imagePath + "|" + user;
-    }
-
-    public static JournalEntry fromString(String entryString) {
-        String[] parts = entryString.split("\\|");
-        if (parts.length == 5) {
-            return new JournalEntry(parts[0], parts[1], parts[2], parts[3], parts[4]);
-        }
-        return null;
     }
 }

@@ -7,10 +7,17 @@ import java.util.Map;
 public class UserManager {
     private static final String USERS_FILE = "users.txt";
     private static UserManager instance;
-    private Map<String, String> users = new HashMap<>();
+    private final Map<String, String> users = new HashMap<>();
 
     private UserManager() {
-        loadUsers(); // Load existing users from the file
+        loadUsers();
+    }
+
+    public static synchronized UserManager getInstance() {
+        if (instance == null) {
+            instance = new UserManager();
+        }
+        return instance;
     }
 
     public void writeUsers() {
@@ -34,25 +41,17 @@ public class UserManager {
                 }
             }
         } catch (FileNotFoundException e) {
-            // File does not exist yet, so nothing to load
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static synchronized UserManager getInstance() {
-        if (instance == null) {
-            instance = new UserManager();
-        }
-        return instance;
-    }
-
     public boolean registerUser(String username, String password) {
         if (users.containsKey(username)) {
-            return false; // User already exists
+            return false;
         }
         users.put(username, password);
-        writeUsers(); // Save users to file
+        writeUsers();
         return true;
     }
 

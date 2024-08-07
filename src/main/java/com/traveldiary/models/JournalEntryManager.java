@@ -9,11 +9,10 @@ public class JournalEntryManager {
 
     private static final String ENTRIES_FILE = "entries.txt";
     private static JournalEntryManager instance;
-    private List<JournalEntry> entries = new ArrayList<>();
+    private final List<JournalEntry> entries = new ArrayList<>();
 
     private JournalEntryManager() {
-        // Private constructor for singleton pattern
-        loadEntries(); // Load existing entries from the file
+        loadEntries();
     }
 
     public static JournalEntryManager getInstance() {
@@ -25,10 +24,8 @@ public class JournalEntryManager {
 
     public boolean saveEntry(JournalEntry entry) {
         try {
-            // Update the list
             entries.removeIf(e -> e.getTitle().equals(entry.getTitle()));
             entries.add(entry);
-            // Write the updated list to the file
             writeEntries();
             return true;
         } catch (Exception e) {
@@ -39,17 +36,14 @@ public class JournalEntryManager {
 
     public boolean deleteEntry(String title) {
         try {
-            // Log current entries for debugging
             System.out.println("Current Entries:");
             entries.forEach(e -> System.out.println(e.getTitle()));
 
-            // Attempt to remove entry by title
             boolean removed = entries.removeIf(e -> e.getTitle().equals(title));
 
-            // Log the result of removal attempt
             if (removed) {
                 System.out.println("Entry with title \"" + title + "\" removed.");
-                writeEntries(); // Write updated list to the file
+                writeEntries();
             } else {
                 System.out.println("No entry with title \"" + title + "\" found.");
             }
@@ -77,7 +71,6 @@ public class JournalEntryManager {
                 }
             }
         } catch (FileNotFoundException e) {
-            // File does not exist yet, so nothing to load
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -17,7 +17,7 @@ public class RegisterController {
     @FXML
     private PasswordField confirmPasswordField;
 
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
 
     @FXML
     private void handleRegister(ActionEvent event) {
@@ -32,7 +32,6 @@ public class RegisterController {
 
         if (userManager.registerUser(username, password)) {
             showAlert(Alert.AlertType.INFORMATION, "Registration Successful", "User registered successfully");
-            // Close the registration window and return to welcome page
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.close();
         } else {
