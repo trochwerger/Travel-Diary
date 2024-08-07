@@ -1,40 +1,16 @@
 package com.traveldiary.models;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
 public class UserManager {
-    private static final String USERS_FILE = "users.dat";
+    private static final String USERS_FILE = "users.txt";
     private static UserManager instance;
-    private Map<String, String> users = new HashMap<>();
+    private final Map<String, String> users = new HashMap<>();
 
     private UserManager() {
-        // Private constructor to prevent instantiation
-    }
-
-    public void writeUsers() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USERS_FILE))) {
-            oos.writeObject(users);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<User> readUsers() {
-        List<User> users = new ArrayList<>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(USERS_FILE))) {
-            users = (List<User>) ois.readObject();
-        } catch (FileNotFoundException e) {
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
-        return users;
+        loadUsers();
     }
 
     public static synchronized UserManager getInstance() {
@@ -44,11 +20,38 @@ public class UserManager {
         return instance;
     }
 
+    public void writeUsers() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE))) {
+            for (Map.Entry<String, String> entry : users.entrySet()) {
+                writer.write(entry.getKey() + ":" + entry.getValue());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadUsers() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":");
+                if (parts.length == 2) {
+                    users.put(parts[0], parts[1]);
+                }
+            }
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean registerUser(String username, String password) {
         if (users.containsKey(username)) {
-            return false; // User already exists
+            return false;
         }
         users.put(username, password);
+        writeUsers();
         return true;
     }
 

@@ -14,7 +14,7 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
     private MainController mainController;
 
     public void setMainController(MainController mainController) {

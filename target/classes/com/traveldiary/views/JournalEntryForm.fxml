@@ -16,10 +16,11 @@
         <TextField fx:id="dateField" promptText="Date" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2"/>
         <TextArea fx:id="contentArea" promptText="Content" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
         <ImageView fx:id="imageView" fitHeight="100" fitWidth="100" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2"/>
-        <Button text="Add Image" onAction="#handleAddImage" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2"/>
+        <TextField fx:id="imagePathField" promptText="Image Path" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="1"/>
+        <Button text="Add Image" onAction="#handleAddImage" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
     </GridPane>
     <HBox spacing="10">
-        <Button text="Save" onAction="#handleSave"/>
+        <Button fx:id="saveButton" text="Save" onAction="#handleSave"/>
         <Button text="Cancel" onAction="#handleCancel"/>
     </HBox>
 </VBox>

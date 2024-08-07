@@ -1,0 +1,29 @@
+The Travel Diary application is designed to manage journal entries and user authentication for users keeping track of their travel experiences. This reflection details the design and implementation of key components in the application, including classes for managing journal entries, user sessions, and user accounts. It also covers the use of file storage and data structures to handle data persistence and retrieval.
+
+JournalEntry Class
+The JournalEntry class represents a single journal entry in the application. It includes attributes for the title, date, content, image path, and the associated user. The class provides getter and setter methods for these attributes and includes a toString method to convert the entry into a string format for easy storage and retrieval. The fromString method parses a string representation of a journal entry and creates a JournalEntry object.
+Purpose: Encapsulate data related to a journal entry and provide serialization and deserialization methods.
+
+JournalEntryManager Class
+The JournalEntryManager class is responsible for managing a collection of JournalEntry objects. It implements the singleton pattern to ensure a single instance manages the entries throughout the application. This class provides functionality to save, delete, and retrieve journal entries. It interacts with a file system to persist entries between application runs.
+Purpose: Handle CRUD operations on journal entries and persist data to a file.
+
+Data Storage and File Handling:
+File Storage: Journal entries are stored in a plain text file (entries.txt). Each entry is represented as a string in a specific format (title|date|content|imagePath|user), which is written to and read from the file. This approach simplifies data persistence but lacks features like data integrity checks or concurrent access management.
+Data Structures: The primary data structure used for managing journal entries in memory is a List<JournalEntry>. This structure allows efficient addition, removal, and retrieval of entries.
+
+SessionManager Class
+The SessionManager class manages the user session, maintaining the current user’s information. It is also designed as a singleton to ensure a single instance controls the session state throughout the application.
+Purpose: Manage the session state, including setting and clearing the current user.
+
+User Class
+The User class represents a user in the application, including attributes for the username, password, and email. Although this class currently stores passwords in plaintext, it is advisable to hash passwords in a real-world application for security purposes.
+Purpose: Encapsulate user-related data and provide methods for accessing and modifying it.
+
+UserManager Class
+The UserManager class is responsible for managing user accounts, including registration and authentication. It uses a singleton pattern to ensure that only one instance manages the user data. The class interacts with a file system to persist user information.
+Purpose: Manage user accounts, handle user registration and authentication, and persist user data to a file.
+
+Data Storage and File Handling:
+File Storage: User information is stored in a plain text file (users.txt). Each user is represented as a string in a username:password format. This approach is simple but lacks advanced features like encryption or data validation.
+Data Structures: The primary data structure used for managing users in memory is a Map<String, String>, where the key is the username and the value is the password. This structure supports efficient lookups, insertions, and deletions, making it suitable for authentication tasks.
